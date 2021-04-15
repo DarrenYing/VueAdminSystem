@@ -8,11 +8,21 @@ module.exports = {
     lintOnSave: false,
     // webpack 配置
     chainWebpack: (config) => {
+        const svgRule = config.module.rule("svg");
+        svgRule.uses.clear();
+        svgRule
+        .use("svg-sprite-loader")
+        .loader("svg-sprite-loader")
+        .options({
+          symbolId: "icon-[name]",
+          include: ["./src/icons"]
+        });
     },
     configureWebpack: (config) => {
         config.resolve = {  //配置解析别名
             extensions: ['.js', '.json', '.vue'],   //自动添加文件名后缀
             alias: {
+                'vue': 'vue/dist/vue.esm-bundler.js',
                 '@': path.resolve(__dirname, './src'),
                 '@c': path.resolve(__dirname, './src/components'),
                 'common': path.resolve(__dirname, './src/common'),

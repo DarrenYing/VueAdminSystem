@@ -52,9 +52,12 @@
   import { stripScript, validatePass, validateEmail, validateVCode } from '@/utils/validate';
   import { ElMessage } from 'element-plus';
   import sha1 from 'js-sha1'; //常用加密方式：base64，md5，sha1
+  import { useRouter } from 'vue-router'
+  import { useStore } from 'vuex';
+
 
   export default {
-    name: "login",
+    name: "Login",
 
     setup(props, context) {
 
@@ -110,8 +113,7 @@
         }
       };
 
-      const ruleForm = reactive(
-        {
+      const ruleForm = reactive({
           username: '12345621@qq.com',
           password: '123456a',
           password2: '123456a',
@@ -151,9 +153,14 @@
         text: '获取验证码'
       });
 
-
+      // 计时器
       const timer = ref('null');
 
+      // 路由
+      const router = useRouter(); // vue3中没有$router了
+
+      // store
+      const store = useStore();
 
       // 生命周期示例
       onMounted(() => {
@@ -161,7 +168,7 @@
       });
 
       // 更新按钮状态
-      const updataButtonStatus = ((btn, params) => {
+      const updateButtonStatus = ((btn, params) => {
         btn.status = params.status;
         btn.text = params.text;
       })
@@ -193,7 +200,7 @@
           num--;
           if(num === 0) {
             clearInterval(timer.value);
-            updataButtonStatus(vcodeBtnStatus, {
+            updateButtonStatus(vcodeBtnStatus, {
               status: false,
               text: '再次获取',
             });
@@ -240,7 +247,7 @@
         };
 
         //点击获取验证码后，状态变为禁用
-        updataButtonStatus(vcodeBtnStatus, {
+        updateButtonStatus(vcodeBtnStatus, {
           status: true,
           text: '发送中',
         });
@@ -298,18 +305,36 @@
           code: ruleForm.code,
         };
 
-        userLogin(requestData).then(response => {
+        // 通过vuex的actions异步调用接口
+        store.dispatch('login/login', requestData).then(response => {
           let data = response.data;
           ElMessage.success({
             message: data.message,
             type: 'success'
           });
           //路由跳转
-
-
+          router.push({
+            name: 'Dashboard'
+          })
         }).catch(error => {
           console.log(error);
         });
+
+        // 直接调用接口
+        // userLogin(requestData).then(response => {
+        //   let data = response.data;
+        //   ElMessage.success({
+        //     message: data.message,
+        //     type: 'success'
+        //   });
+        //   //路由跳转
+        //   router.push({
+        //     name: 'Dashboard'
+        //   })
+        //
+        // }).catch(error => {
+        //   console.log(error);
+        // });
       };
 
       // 提交

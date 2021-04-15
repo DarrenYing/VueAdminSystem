@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
-import { getToken, getUserName } from '@/utils/app';
+import { getToken, getUsername } from '@/utils/app';
 
 // 创建service
 // 给定API，地址 http://www.web-jshtml.cn/productApi
@@ -17,7 +17,7 @@ service.interceptors.request.use(config => {
 
     //根据后端需要，在请求头添加参数
     config.headers['Token'] = getToken();
-    config.headers['UserName'] = getUserName();
+    config.headers['UserName'] = getUsername();
     return config;
 }, err => {
     //处理请求错误

@@ -27,6 +27,16 @@ export function userLogin(data) {
     })
 }
 
+/**
+ * 登出
+ */
+export function userLogout(data = {}) {
+    return service.request({
+        method: "post",
+        url: "/logout/",
+        data
+    })
+}
 
 /**
  * 注册

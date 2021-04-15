@@ -11,19 +11,19 @@ export function setToken(token) {
     return cookie.set(adminToken, token);
 }
 
-export function removeToKen() {
-    return cookie.remove(adminToKen);
+export function removeToken() {
+    return cookie.remove(adminToken);
 }
 
-export function getUserName() {
+export function getUsername() {
     return cookie.get(usernameKey);
 }
 
-export function setUserName(username) {
+export function setUsername(username) {
     return cookie.set(usernameKey, username);
 }
 
-export function removeUserName() {
+export function removeUsername() {
     return cookie.remove(usernameKey);
 }
 
